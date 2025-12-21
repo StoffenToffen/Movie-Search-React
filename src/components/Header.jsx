@@ -1,10 +1,9 @@
 import { Search, Settings } from "lucide-react";
 import { useRef } from "react";
-import App from "../App";
 
-const Header = () => {
-  const inputRef = useRef(null)
-  const { srcParams, setSrcParams } = App()
+const Header = ({ setSrcParamFn }) => {
+	const navInputRef = useRef(null);
+	const inputRef = useRef(null);
 
 	return (
 		<header className="shadow-[0_60px_60px] shadow-shadow flex flex-col items-center relative overflow-hidden">
@@ -31,13 +30,13 @@ const Header = () => {
 				<div className="flex items-center gap-4 relative">
 					<Search
 						className="absolute left-2 cursor-pointer invisible sm:visible"
-						onClick={() => inputRef.current.focus()}
+						onClick={() => navInputRef.current.focus()}
 					/>
 					<input
 						type="text"
 						placeholder="Find a movie"
-            ref={inputRef}
-						onKeyUp={() => {if (inputRef && inputRef.current.key === "Enter") {setSrcParams(inputRef.current.value); console.log(srcParams)}}} /* TODO: make this work */
+						ref={navInputRef}
+						onKeyUp={setSrcParamFn}
 						className="bg-none w-0 border-2 border-transparent rounded-full outline-none py-3 pr-1 pl-8 text-sm cursor-default invisible transition-all duration-400 focus:w-50 focus:border-secondary focus:cursor-text sm:visible md:focus:w-60"
 					/>
 					<Settings className="cursor-not-allowed invisible sm:visible" />
@@ -55,12 +54,13 @@ const Header = () => {
 				<input
 					type="text"
 					placeholder="Find a movie"
-					onKeyUp={() => setSearchParameterEnter(e)}
+					ref={inputRef}
+					onKeyUp={setSrcParamFn}
 					className="bg-none text-xl border-2 border-secondary rounded-full outline-none py-4 px-8 transition duration-300 focus:shadow-[0_0_8px] focus:shadow-accent focus:scale-102 xs:py-6 xs:pr-16 xs:pl-8"
 				/>
-				<Search
+				<Search size={30}
 					className="text-2xl absolute top-1/2 right-6 -translate-y-1/2 cursor-pointer transition duration-300 hover:scale-105"
-					onClick={() => setSearchParameterClick()}
+					onClick={(e) => setSrcParamFn(e, inputRef)}
 				/>
 			</div>
 		</header>

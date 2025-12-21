@@ -1,63 +1,57 @@
-import { useState } from 'react';
-import Header from './components/Header';
-import Recommendations from './components/Recommendations';
+import { useEffect, useState } from "react";
+import Header from "./components/Header";
+import Recommendations from "./components/Recommendations";
+import axios from "axios";
 
 function App() {
-  const [srcParam, setSrcParam] = useState("")
+	const [srcParam, setSrcParam] = useState("Avengers");
+	const [movies, setMovies] = useState([]);
 
-function setSearchParameterEnter(event) {
-  let searchParameter = "";
-  if (event && event.key === "Enter") {
-    if (document.querySelector(".nav__input") === document.activeElement) {
-      searchParameter = document.querySelector(".nav__input").value;
-      fetchMovies(searchParameter);
-    } else {
-      searchParameter = document.querySelector(".header__src__input").value;
-      fetchMovies(searchParameter);
-    }
-  }
+	const setSrcParamFn = (e, inputRef) => {
+		if (e.type === "click") setSrcParam(inputRef.current.value);
+		else if (e.key === "Enter") setSrcParam(e.target.value);
+	};
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const { data } = await axios.get(
+					`https://www.omdbapi.com/?apikey=caccfb1f&s=${srcParam}`,
+				);
+				setMovies(data.Search);
+			} catch (err) {
+				console.error(err);
+			}
+		})();
+	}, [srcParam]);
+
+	// useEffect(() => {
+	// 	(async () => {
+	// 		try {
+	// 			const min = 4000000;
+	// 			const max = 4100000;
+	// 			const ranNum = () => Math.floor(Math.random() * (max - min)) + min;
+
+	// 			const promises = new Array(6).fill(null).map(async () => {
+	// 				const { data } = await axios.get(
+	// 					`https://www.omdbapi.com/?apikey=caccfb1f&i=tt${ranNum()}`,
+	// 				);
+	// 				return data;
+	// 			});
+	// 			const results = await Promise.all(promises);
+	// 			setMovies(results.filter(movie => movie.Response !== "False"));
+	// 		} catch (err) {
+	// 			console.error(err);
+	// 		}
+	// 	})();
+	// }, []);
+
+	return (
+		<>
+			<Header setSrcParamFn={setSrcParamFn} />
+			<Recommendations srcParam={srcParam} movies={movies} />
+		</>
+	);
 }
 
-function setSearchParameterClick() {
-  let searchParameter = document.querySelector(".header__src__input").value;
-  fetchMovies(searchParameter);
-}
-
-async function fetchMovies(searchParameter) {
-  try {
-    if (!!searchParameter) {
-      document.querySelector(
-        ".src-results__name"
-      ).innerHTML = `"${searchParameter}"`;
-    } else {
-      searchParameter = "avengers";
-    }
-
-    const response = await fetch(
-      `https://www.omdbapi.com/?apikey=caccfb1f&s=${searchParameter}`
-    );
-    const data = await response.json();
-    const movies = data.Search.slice(0, 6);
-    renderMovies(movies);
-  } catch (error) {
-    console.log(error);
-    document.querySelector(
-      "#movie-list"
-    ).innerHTML = `<h3 class="src-results__movies__error">No results found</h3>`;
-  }
-}
-
-fetchMovies();
-
-
-  return (
-    <>
-      <Header />
-      <Recommendations />
-
-    </>
-  )
-
-}
-
-export default App
+export default App;

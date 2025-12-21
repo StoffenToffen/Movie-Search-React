@@ -1,6 +1,6 @@
-import { Clock, Globe2, Star } from "lucide-react";
+import React from "react";
 
-const Movie = ({ movie: { Poster, Title } }) => {
+const MovieSkeleton = () => {
 	return (
 		<figure className="shadow-[0_8px_12px] shadow-shadow my-6 mx-2 rounded-lg max-w-31 overflow-hidden xs:max-w-45 md:max-w-49.5">
 			<div className="relative group">
@@ -32,4 +32,4 @@ const Movie = ({ movie: { Poster, Title } }) => {
 	);
 };
 
-export default Movie;
+export default MovieSkeleton;
