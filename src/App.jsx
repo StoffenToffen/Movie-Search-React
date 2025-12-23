@@ -1,26 +1,39 @@
-import { useEffect, useState } from "react";
-import Header from "./components/Header";
-import Recommendations from "./components/Recommendations";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import Nav from "./components/Nav";
+import HomePage from "./pages/HomePage";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
 	const [srcParam, setSrcParam] = useState("Avengers");
 	const [movies, setMovies] = useState([]);
+	const [isError, setIsError] = useState(false);
+	const navigate = useNavigate();
+	const location = useLocation();
 
 	const setSrcParamFn = (e, inputRef) => {
-		if (e.type === "click") setSrcParam(inputRef.current.value);
-		else if (e.key === "Enter") setSrcParam(e.target.value);
+		if (e.type === "click") {
+			setSrcParam(inputRef.current.value);
+			if (location.pathname !== "/search") navigate("/search");
+		} else if (e.key === "Enter") {
+			setSrcParam(e.target.value);
+			if (location.pathname !== "/search") navigate("/search");
+		}
 	};
 
 	useEffect(() => {
 		(async () => {
 			try {
+				setMovies([]);
 				const { data } = await axios.get(
 					`https://www.omdbapi.com/?apikey=caccfb1f&s=${srcParam}`,
 				);
 				setMovies(data.Search);
+				data.Search.slice(0, 10);
 			} catch (err) {
 				console.error(err);
+				setIsError(true);
 			}
 		})();
 	}, [srcParam]);
@@ -48,8 +61,31 @@ function App() {
 
 	return (
 		<>
-			<Header setSrcParamFn={setSrcParamFn} />
-			<Recommendations srcParam={srcParam} movies={movies} />
+			<Nav setSrcParamFn={setSrcParamFn} />
+			<Routes>
+				<Route
+					path="/"
+					element={
+						<HomePage
+							setSrcParamFn={setSrcParamFn}
+							setSrcParam={setSrcParam}
+							movies={movies}
+							isError={isError}
+						/>
+					}
+				/>
+				<Route
+					path="/search"
+					element={
+						<SearchPage
+							setSrcParamFn={setSrcParamFn}
+							srcParam={srcParam}
+							movies={movies}
+							isError={isError}
+						/>
+					}
+				/>
+			</Routes>
 		</>
 	);
 }

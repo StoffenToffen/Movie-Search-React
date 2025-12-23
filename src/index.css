@@ -3,40 +3,50 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
 @theme {
-  --color-primary: #1e1e1e;
-  --color-secondary: #ffffff;
-  --color-accent: #dc143c;
-  --color-shadow: rgba(0, 0, 0, 0.4);
-  --font-inter: "Inter", arial, sans-serif;
-  --breakpoint-xs: 35rem;
+	--color-primary: #1e1e1e;
+	--color-secondary: #ffffff;
+	--color-accent: #dc143c;
+	--color-shadow: rgba(0, 0, 0, 0.4);
+	--color-screen: #808080;
+
+	--font-inter: "Inter", arial, sans-serif;
+
+	--breakpoint-xs: 35rem;
+
+	--animate-screen: screen 1s infinite;
+
+	@keyframes screen {
+		0% {
+			transform: translateX(-100%);
+		}
+		100% {
+			transform: translateX(100%);
+		}
+	}
 }
 
+@utility colored-text {
+	@apply text-accent font-light;
+}
 
-@utility colored-text {@apply text-accent font-light}
+@utility nav-link {
+	@apply no-underline text-lg font-extralight pb-1 border-b border-transparent hidden transition duration-300 hover:text-accent hover:border-accent sm:text-base sm:block;
+}
 
-@utility nav-link {@apply no-underline text-lg font-extralight pb-1 border-b border-transparent transition duration-300 hover:text-accent hover:border-accent sm:text-base}
+@utility skeleton {
+	@apply bg-shadow overflow-hidden rounded-lg;
+}
+
+@utility skeleton-gradients {
+	@apply h-full bg-linear-90 from-shadow via-screen to-shadow animate-screen;
+}
 
 @layer base {
-  body {
-    @apply bg-primary text-secondary font-inter tracking-wide
-  }
+	body {
+		@apply bg-primary text-secondary font-inter tracking-wide;
+	}
 
-  nav {
-    @apply flex justify-between items-center w-full max-w-370 mt-2.5 mx-auto pt-6 px-10 sm:px-20
-  }
-}
-
-.src-results__movies__spinner {
-  color: var(--accent);
-  font-size: 64px;
-  animation: spinning 1s infinite;
-}
-
-@keyframes spinning {
-  0% {
-    rotate: 0deg;
-  }
-  100% {
-    rotate: 360deg;
-  }
+	nav {
+		@apply absolute top-0 left-1/2 -translate-x-1/2 z-10 flex justify-between items-center w-full max-w-370 mt-2.5 pt-6 px-10 sm:px-20;
+	}
 }
