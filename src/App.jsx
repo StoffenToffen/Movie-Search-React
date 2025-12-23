@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import Nav from "./components/Nav";
 import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
+import Footer from "./components/footer";
 
 function App() {
 	const [srcParam, setSrcParam] = useState("Avengers");
@@ -26,6 +26,7 @@ function App() {
 		(async () => {
 			try {
 				setMovies([]);
+				setIsError(false);
 				const { data } = await axios.get(
 					`https://www.omdbapi.com/?apikey=caccfb1f&s=${srcParam}`,
 				);
@@ -61,31 +62,30 @@ function App() {
 
 	return (
 		<>
-			<Nav setSrcParamFn={setSrcParamFn} />
-			<Routes>
-				<Route
-					path="/"
-					element={
-						<HomePage
-							setSrcParamFn={setSrcParamFn}
-							setSrcParam={setSrcParam}
-							movies={movies}
-							isError={isError}
-						/>
-					}
-				/>
-				<Route
-					path="/search"
-					element={
-						<SearchPage
-							setSrcParamFn={setSrcParamFn}
-							srcParam={srcParam}
-							movies={movies}
-							isError={isError}
-						/>
-					}
-				/>
-			</Routes>
+		<Routes>
+			<Route
+				path="/"
+				element={
+					<HomePage
+						setSrcParamFn={setSrcParamFn}
+						movies={movies}
+						isError={isError}
+					/>
+				}
+			/>
+			<Route
+				path="/search"
+				element={
+					<SearchPage
+						setSrcParamFn={setSrcParamFn}
+						srcParam={srcParam}
+						movies={movies}
+						isError={isError}
+					/>
+				}
+			/>
+		</Routes>
+		<Footer />
 		</>
 	);
 }
