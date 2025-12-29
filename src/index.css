@@ -33,12 +33,24 @@
 	@apply no-underline text-lg font-extralight pb-1 border-b border-transparent transition duration-300 hover:text-accent hover:border-accent;
 }
 
+@utility nav-wrapper {
+	@apply bg-primary absolute top-0 z-9 w-full h-24 border-b-2 border-accent shadow-xl shadow-shadow;
+}
+
 @utility skeleton {
 	@apply bg-shadow overflow-hidden rounded-lg;
 }
 
 @utility skeleton-gradients {
 	@apply h-full bg-linear-90 from-shadow via-screen to-shadow animate-screen;
+}
+
+@utility recommendations-container {
+	@apply flex justify-center min-h-[calc(50vh-120px)] my-20 mx-auto px-4 flex-col max-w-300 gap-15 w-full md:w-9/10 md:px-10;
+}
+
+@utility recommendations-header {
+	@apply text-center text-3xl font-extralight md:text-start;
 }
 
 @layer base {
