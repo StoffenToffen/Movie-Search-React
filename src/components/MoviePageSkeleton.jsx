@@ -1,6 +1,8 @@
 const MoviePageSkeleton = () => {
 	return (
 		<section
+			aria-busy="true"
+			aria-label="Loading movie details"
 			className="skeleton relative flex flex-col justify-center items-center gap-4 my-20 py-20
 				sm:flex-row"
 		>

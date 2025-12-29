@@ -1,13 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import SearchPage from "./pages/SearchPage";
 import Footer from "./components/footer";
+import HomePage from "./pages/HomePage";
 import MoviePage from "./pages/MoviePage";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
 	const [srcParam, setSrcParam] = useState("Avengers");
+	const [page, setPage] = useState(1);
 	const [movies, setMovies] = useState([]);
 	const [isError, setIsError] = useState(false);
 	const navigate = useNavigate();
@@ -23,13 +24,18 @@ function App() {
 		}
 	};
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <>
+	useEffect(() => {
+		setPage(1);
+	}, [srcParam]);
+
 	useEffect(() => {
 		(async () => {
 			try {
 				setMovies([]);
 				setIsError(false);
 				const { data } = await axios.get(
-					`https://www.omdbapi.com/?apikey=caccfb1f&s=${srcParam}`,
+					`https://www.omdbapi.com/?apikey=caccfb1f&s=${srcParam}&page=${page}`,
 				);
 				setTimeout(() => setMovies(data.Search), 500);
 				data.Search.slice(0, 10);
@@ -38,7 +44,7 @@ function App() {
 				setIsError(true);
 			}
 		})();
-	}, [srcParam]);
+	}, [srcParam, page]);
 
 	return (
 		<>
@@ -61,6 +67,8 @@ function App() {
 							setSrcParamFn={setSrcParamFn}
 							srcParam={srcParam}
 							movies={movies}
+							setPage={setPage}
+							page={page}
 							isError={isError}
 						/>
 					}

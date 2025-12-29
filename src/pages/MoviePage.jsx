@@ -1,10 +1,10 @@
-import { useParams } from "react-router-dom";
-import Nav from "../components/Nav";
-import { useEffect, useState } from "react";
 import axios from "axios";
 import { Play } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import MoviePageSkeleton from "../components/MoviePageSkeleton";
+import Nav from "../components/Nav";
 import Recommendations from "../components/Recommendations";
-import MoviePageSkeleton from "../components/ui/MoviePageSkeleton";
 
 const MoviePage = ({ setSrcParamFn, movies, setIsError, isError }) => {
 	const { movieId } = useParams();

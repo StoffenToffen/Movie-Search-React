@@ -45,6 +45,7 @@ const Nav = ({ setSrcParamFn }) => {
 				<div className="flex items-center gap-4 relative py-6">
 					<button
 						type="button"
+						aria-label="Open search"
 						className="absolute left-2 cursor-pointer"
 						onClick={() => navInputRef.current.focus()}
 					>
@@ -62,6 +63,7 @@ const Nav = ({ setSrcParamFn }) => {
 					/>
 					<button
 						type="button"
+						aria-label="Open menu"
 						className="cursor-pointer"
 						onClick={() => {
 							setIsNavMenuOpen(true);
@@ -74,6 +76,7 @@ const Nav = ({ setSrcParamFn }) => {
 
 			<button
 				type="button"
+				aria-label="Close menu"
 				className={`absolute z-11 inset-0
 					${!isNavMenuOpen && "invisible"}`}
 				onClick={() => {
@@ -90,6 +93,7 @@ const Nav = ({ setSrcParamFn }) => {
 
 					<button
 						type="button"
+						aria-label="Close menu"
 						className="cursor-pointer"
 						onClick={() => {
 							setIsNavMenuOpen(false);

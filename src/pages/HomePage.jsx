@@ -1,18 +1,23 @@
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Nav from "../components/Nav";
 import Recommendations from "../components/Recommendations";
 import SearchBar from "../components/ui/SearchBar";
-import { useEffect } from "react";
 
 const HomePage = ({ setSrcParamFn, setSrcParam, movies, isError }) => {
 	const location = useLocation();
 
+	/** biome-ignore lint/correctness/useExhaustiveDependencies: <> */
 	useEffect(() => {
-		if (location.hash === "#contact") /* TODO continue on this */
-			window.scrollTo(0, document.body.scrollHeight);
-		else window.scrollTo(0, 0);
+		if (location.hash === "#contact") {
+			window.scrollTo({
+				left: 0,
+				top: document.body.scrollHeight,
+				behavior: "smooth",
+			});
+		} else window.scrollTo(0, 0);
 		setSrcParam("avengers");
-	}, []);
+	}, [location.hash]);
 
 	return (
 		<>
